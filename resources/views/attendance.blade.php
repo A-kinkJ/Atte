@@ -66,7 +66,7 @@ $title = '日付一覧'
       </form>
     </li>
     <li>
-      <form action="/attendance/{attendance}" method="GET" name="attendanceform">
+      <form action="/attendance" method="GET" name="attendanceform">
         @csrf
         <a href="javascript:attendanceform.submit()">日付一覧</a>
       </form>
@@ -83,7 +83,7 @@ $title = '日付一覧'
 
 @section('content')
 <div class="attendance-date">
-  <form action=" /attendance/{attendance}" method="POST">
+  <form action=" /attendance" method="POST">
     @csrf
     <input type="hidden" class="form-control" id="today" name="today" value={{ $today }}>
     <input type="hidden" class="flg" name="dayflg" value="back">
@@ -91,7 +91,7 @@ $title = '日付一覧'
   </form>
   </form>
   <p>{{$today}}</p>
-  <form action=" /attendance/{attendance}" method="POST">
+  <form action=" /attendance" method="POST">
     @csrf
     <input type="hidden" class="form-control" id="today" name="today" value={{ $today }}>
     <input type="hidden" class="flg" name="dayflg" value="next">
@@ -113,7 +113,7 @@ $title = '日付一覧'
       <td>{{ substr($item->begin_time,10)}}</td>
       <td>{{ substr($item->end_time,10)}}</td>
       <td>{{ $item->getRest() }}</td>
-      <td></td>
+      <td>{{ $item->attendanceTime() }}</td>
     </tr>
     @endforeach
   </table>

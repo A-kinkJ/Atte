@@ -49,7 +49,7 @@ $title = 'ホーム'
       </form>
     </li>
     <li>
-      <form action="/attendance/{attendance?}" method="GET" name="attendanceform">
+      <form action="/attendance" method="GET" name="attendanceform">
         @csrf
         <a href="javascript:attendanceform.submit()">日付一覧</a>
       </form>

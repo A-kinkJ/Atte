@@ -17,18 +17,11 @@ class Rest extends Model
 
     public function get_rest_time()
     {
-        $endTime = strtotime($this->breake_end_time);
-        $startTime = strtotime($this->breake_begin_time);
-        $diff = $endTime - $startTime;
-        //$endTime = new Carbon($this->breake_end_time);
-        //$startTime = new Carbon($this->breake_begin_time);
-        //$diff = $startTime->diffInSeconds($endTime);
-        if(gmdates("H:i:s",$diff) == null){
-            return "00:00:00";
-        }else{
-        return gmdate("H:i:s", $diff);
-    }
-        //return $diff;
+        $breakeEndTime = strtotime($this->breake_end_time);
+        $breakeStartTime = strtotime($this->breake_begin_time);
+        $diff = $breakeEndTime - $breakeStartTime;
+        
+        return $diff;
         
     }
 }

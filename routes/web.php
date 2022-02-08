@@ -34,14 +34,14 @@ Route::get('/', [AttendanceController::class, 'index'])->middleware('auth');
 Route::post('/',[AttendanceController::class, 'index'])->middleware('auth');;
 
 /*勤怠管理処理*/
-Route::post('/start',[AttendanceController::class, 'start']);
-Route::post('/end',[AttendanceController::class, 'end']);
-Route::post('/reststart',[RestConroller::class, 'restStart']);
-Route::post('/restend',[RestConroller::class, 'restEnd']);
+Route::post('/start',[AttendanceController::class, 'start'])->middleware('auth');
+Route::post('/end',[AttendanceController::class, 'end'])->middleware('auth');
+Route::post('/reststart',[RestConroller::class, 'restStart'])->middleware('auth');
+Route::post('/restend',[RestConroller::class, 'restEnd'])->middleware('auth');
 
 /*勤怠一覧*/
-Route::get('/attendance/{attendance}', [AttendanceListController::class, 'index'])->middleware('auth');;
-Route::post('/attendance/{attendance}', [AttendanceListController::class, 'attendanceDate']);
+Route::get('/attendance', [AttendanceListController::class, 'index'])->middleware('auth');
+Route::post('/attendance', [AttendanceListController::class, 'attendanceDate'])->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

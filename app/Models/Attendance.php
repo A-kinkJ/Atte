@@ -23,14 +23,24 @@ class Attendance extends Model
 
     public function getRest(){
         $sumRestTime = 0;
-        $getRests = $this->rests();
+        $getRests = $this->rests;
         foreach($getRests as $getRest){
-            $sumRestTime += $getRest->get_rest_time;
+            $sumRestTime += $getRest->get_rest_time();
         }
         return gmdate("H:i:s", $sumRestTime);
     }
 
     public function attendanceTime(){
+        $endTime = strtotime($this->end_time);
+        $startTime = strtotime($this->begin_time);
+        $attendanceDiff = $endTime - $startTime;
+        //return $attendanceDiff;
+
+        $getRests = $this->rests;
+        foreach($getRests as $getRest){
+            $attendanceDiff -= $getRest->get_rest_time();
+        }
+        return gmdate("H:i:s",$attendanceDiff);
 
     }
 
