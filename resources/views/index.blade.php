@@ -34,7 +34,6 @@ $title = 'ホーム'
     padding: 60px 120px;
     background-color: white;
   }
-
 </style>
 @section('header')
 <nav>
@@ -65,78 +64,78 @@ $title = 'ホーム'
 @endsection
 
 @section('content')
-  <div class="index-content">
-    <div class="user-name">
-      <h1>{{ $user->name }}さんお疲れ様です</h1>
-      <p class="user-name" id="timer" type="hidden"></p>
-      @if(session('error'))
-      <p class="user-error-start">{{session('error')}}</p>
-      @endif
-    </div>
-    <div class="attendance-button">
-      <table>
-        <tr>
-          <td>
-            <form action="/start" method="POST" name="btn_start">
-              @if(Session::has('start_time') || Session::has('rest_start') || Session::has('rest_end'))
-              <button type="submit" id="btn_start" disabled>勤務開始</button>
-              @else
-              @csrf
-              @method('POST')
-              <button type="submit" id="btn_start">勤務開始</button>
-              @endif
-            </form>
-          </td>
-          <td>
-            <form action="/end" method="POST" name="btn_end">
-              @csrf
-              @if(Session::has('rest_end'))
-              <button type="submit" id="btn_end">勤怠終了</button>
-              @elseif(!Session::has('start_time'))
-              <button type="submit" id="btn_end" disabled>勤怠終了</button>
-              @else
-              @method('POST')
-              <button type="submit" id="btn_end">勤怠終了</button>
-              @endif
-            </form>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <form action="/reststart" method="POST">
-              @csrf
-              @if(Session::has('rest_end'))
-              <button type="submit" id="btn_rest_start">休憩開始</button>
-              @elseif(!Session::has('start_time') || Session::has('rest_start'))
-              <button type="submit" id="btn_rest_start" disabled>休憩開始</button>
-              @else
-              @csrf
-              @method('POST')
-              <button type="submit" id="btn_rest_start">休憩開始</button>
-              @endif
-            </form>
-          </td>
-          <td>
-            <form action="/restend" method="POST">
-              @csrf
-              @method('POST')
-              @if(!Session::has('start_time') && !Session::has('rest_start'))
-              <button type="submit" id="btn_rest_end" disabled>休憩終了</button>
-              @elseif(Session::has('start_time'))
-              <button type="submit" id="btn_rest_end" disabled>休憩終了</button>
-              @else
-              <button type="submit" id="btn_rest_end">休憩終了</button>
-              @endif
-            </form>
-          </td>
-        </tr>
-      </table>
-    </div>
+<div class="index-content">
+  <div class="user-name">
+    <h1>{{ $user->name }}さんお疲れ様です</h1>
+    <p class="user-name" id="timer" type="hidden"></p>
+    @if(session('error'))
+    <p class="user-error-start">{{session('error')}}</p>
+    @endif
   </div>
+  <div class="attendance-button">
+    <table>
+      <tr>
+        <td>
+          <form action="/start" method="POST" name="btn_start">
+            @if(Session::has('start_time') || Session::has('rest_start') || Session::has('rest_end'))
+            <button type="submit" id="btn_start" disabled>勤務開始</button>
+            @else
+            @csrf
+            @method('POST')
+            <button type="submit" id="btn_start">勤務開始</button>
+            @endif
+          </form>
+        </td>
+        <td>
+          <form action="/end" method="POST" name="btn_end">
+            @csrf
+            @if(Session::has('rest_end'))
+            <button type="submit" id="btn_end">勤怠終了</button>
+            @elseif(!Session::has('start_time'))
+            <button type="submit" id="btn_end" disabled>勤怠終了</button>
+            @else
+            @method('POST')
+            <button type="submit" id="btn_end">勤怠終了</button>
+            @endif
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <form action="/reststart" method="POST">
+            @csrf
+            @if(Session::has('rest_end'))
+            <button type="submit" id="btn_rest_start">休憩開始</button>
+            @elseif(!Session::has('start_time') || Session::has('rest_start'))
+            <button type="submit" id="btn_rest_start" disabled>休憩開始</button>
+            @else
+            @csrf
+            @method('POST')
+            <button type="submit" id="btn_rest_start">休憩開始</button>
+            @endif
+          </form>
+        </td>
+        <td>
+          <form action="/restend" method="POST">
+            @csrf
+            @method('POST')
+            @if(!Session::has('start_time') && !Session::has('rest_start'))
+            <button type="submit" id="btn_rest_end" disabled>休憩終了</button>
+            @elseif(Session::has('start_time'))
+            <button type="submit" id="btn_rest_end" disabled>休憩終了</button>
+            @else
+            <button type="submit" id="btn_rest_end">休憩終了</button>
+            @endif
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
 @endsection
 
 @section('footer')
-  <small>Atte,inc</small>
+<small>Atte,inc</small>
 @endsection
 
 <script>

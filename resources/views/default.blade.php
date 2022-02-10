@@ -43,6 +43,7 @@
     .footer {
       padding: 10px 0;
       text-align: center;
+      z-index: 0;
     }
   </style>
 </head>

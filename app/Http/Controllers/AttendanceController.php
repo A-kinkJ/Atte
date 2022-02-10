@@ -55,30 +55,20 @@ class AttendanceController extends Controller
          //勤務開始処置
         $user = Auth::user();
         // 打刻は１日一回まで
-        $oldTimestamp = Attendance::where('user_id',$user->id)->latest()->first();
-        if($oldTimestamp){
-            $oldTimestampStart = new Carbon($oldTimestamp->begin_time);
+        $oldTimeStamp = Attendance::where('user_id',$user->id)->latest()->first();
+        if($oldTimeStamp){
+            $oldTimeStampStart = new Carbon($oldTimeStamp->begin_time);
 
-            $oldTimestampDay = $oldTimestampStart->startOfDay();
+            $oldTimeStampDay = $oldTimeStampStart->startOfDay();
         }
 
-        $newTimestampDay = Carbon::today();
+        $newTimeStampDay = Carbon::today();
 
         //同日付の出勤打刻で、かつ直前のTimestampの退勤打刻がされていない場合エラーを吐き出す。
-        //if((isset($oldTimestampDay) == $newTimestampDay) && (empty//($oldTimestamp->end_time))){
-
-        //$timestamp = Attendance::create([
-        //    'user_id' => $user->id,
-        //    'begin_time' => Carbon::now()->format('Y-m-d'),
-        //    //'date' => Carbon::today()->format('Y-m-d')
-        //]);
-
-        //1日1回しか押せないようにする
-        //$timestampstart = Carbon::today()->format('Y-m-d');
-        //if($timestampstart == $timestamp->begin_time){
-
-        //    return redirect('/')->with('error','打刻済みです');
-        //}
+        if ((isset($oldTimeStampDay) == $newTimeStampDay) && (empty($oldTimeStamp->end_time))) {
+            return redirect()->back()->with('error', 'すでに出勤打刻がされています。');
+        }
+        
 
         $timestamp = Attendance::create([
             'user_id' => $user->id,
@@ -86,7 +76,6 @@ class AttendanceController extends Controller
             'date' => Carbon::today()
         ]);
             return redirect()->back()->with([
-                'status' => '今日も１日がんばりましょう',
                 'start_time' => true,
             ]);
 

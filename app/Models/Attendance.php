@@ -21,6 +21,10 @@ class Attendance extends Model
         return $this->hasMany(Rest::class);
     }
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
     public function getRest(){
         $sumRestTime = 0;
         $getRests = $this->rests;

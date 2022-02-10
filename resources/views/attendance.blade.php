@@ -51,6 +51,19 @@ $title = '日付一覧'
     text-align: center;
     font-size: 14px;
   }
+
+  .pagination {
+    text-align: center;
+  }
+
+  .pagination li {
+    display: inline-block;
+  }
+
+  svg.w-5.h-5 {
+    height: 10px;
+    width: 10px;
+  }
 </style>
 
 @section('header')
@@ -109,7 +122,7 @@ $title = '日付一覧'
     </tr>
     @foreach($items as $item)
     <tr>
-      <td>{{ $item->name }}</td>
+      <td>{{ $item->user->name }}</td>
       <td>{{ substr($item->begin_time,10)}}</td>
       <td>{{ substr($item->end_time,10)}}</td>
       <td>{{ $item->getRest() }}</td>
@@ -117,7 +130,11 @@ $title = '日付一覧'
     </tr>
     @endforeach
   </table>
+  <div class="d-flex justify-content-center">
+  {{ $items->appends($today)->links() }}
 </div>
+</div>
+
 @endsection
 @section('footer')
 <small>Atte,inc</small>

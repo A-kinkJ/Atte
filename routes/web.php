@@ -27,7 +27,7 @@ Route::get('/login',[AuthenticatedSessionController::class, 'create']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 /*ログアウト*/
-Route::post('/logout',[AuthenticatedSessionController::class, 'destroy']);
+Route::post('/logout',[AuthenticatedSessionController::class, 'destroy'])->middleware('auth');
 
 /*ユーザーページ*/
 Route::get('/', [AttendanceController::class, 'index'])->middleware('auth');
