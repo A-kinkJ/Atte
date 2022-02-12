@@ -85,7 +85,7 @@ $title = '日付一覧'
       </form>
     </li>
     <li>
-      <form action="/userList" method="GET" name="userList">
+      <form action="/userist" method="GET" name="userList">
         @csrf
         <a href="javascript:userList.submit()">ユーザー一覧</a>
       </form>
