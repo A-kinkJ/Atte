@@ -40,15 +40,17 @@ Route::post('/reststart',[RestConroller::class, 'restStart'])->middleware('auth'
 Route::post('/restend',[RestConroller::class, 'restEnd'])->middleware('auth');
 
 /*勤怠一覧*/
-Route::get('/attendance', [AttendanceListController::class, 'index'])->middleware('auth');
-Route::post('/attendance', [AttendanceListController::class, 'attendanceDate'])->middleware('guest');
+Route::get('/attendance', [AttendanceListController::class, 'index'])->
+middleware('auth');
+Route::post('/attendance', [AttendanceListController::class, 'attendanceDate'])->middleware('auth');
 
 /*ユーザー一覧ページ*/
 Route::get('/userlist', [AttendanceListController::class, 'userList'])->middleware('auth');
 
 /*ユーザー毎の勤怠ページ一覧*/
 Route::get('/userattendance', [AttendanceListController::class, 'userAttendanceList'])->middleware('auth');
-Route::post('/userattendance', [AttendanceListController::class, 'userAttendanceListNext'])->middleware('auth');
+Route::post('/userattendance', [AttendanceListController::class, 'userAttendanceListNext'])->
+middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
