@@ -18,8 +18,15 @@ class AttendanceController extends Controller
         $user = Auth::user();
         $date = Carbon::today();
         $timestamp = Attendance::where('user_id',$user->id)->latest()->first();
+        if ($timestamp == null ){
+            $timestamp = Attendance::create([
+                'user_id' => $user->id,
+                //'begin_time' => Carbon::today(),
+            ]);
+        }
+        return view('index', ['user' => $user]);
 
-        if ($timestamp->begintime_time != null && $date != date("Y-m-d", strtotime($timestamp->begin_time)) && $timestamp->end_time == null) {
+        if ($timestamp->begin_time != null && $date != date("Y-m-d", strtotime($timestamp->begin_time)) && $timestamp->end_time == null) {
             //前日勤怠開始ボタンを押したまま退勤ボタンを押さずに日付を跨いだ場合
             $lastEndTime = $timestamp->end_time;
             $lastDateTime = $timestamp->start_time;
@@ -32,15 +39,10 @@ class AttendanceController extends Controller
                 'end_time' => Carbon::parse($lastDateTime)->endOfDay(),
                 'getRest' => '00:00:00'
             ]);
-        }
-
-            $timestamp = Attendance::create([
-                'user_id' => $user->id,
-                'begin_time' => Carbon::today(),
-            ]);
             }
+
         return view('index',['user'=>$user]);
-        
+        }
     }
 
     public function start(Request $request)
@@ -58,9 +60,9 @@ class AttendanceController extends Controller
         $newTimeStampDay = Carbon::today();
 
         //同日付の出勤打刻で、かつ直前のTimestampの退勤打刻がされていない場合エラーを吐き出す。
-        if ((isset($oldTimeStampDay) == $newTimeStampDay) && (empty($timeStamp->end_time))) {
-            return redirect()->back()->with('error', 'すでに出勤打刻がされています。');
-        }
+        //if ((isset($oldTimeStampDay) == $newTimeStampDay) && (empty($timeStamp->end_time))) {
+            //return redirect()->back()->with('error', 'すでに出勤打刻がされています。');
+        //}
 
 
         $timeStamp = Attendance::create([

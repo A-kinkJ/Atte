@@ -38,10 +38,11 @@ $title = 'ユーザー毎の勤怠'
     margin: 0 auto;
     padding: 10px 0;
     border-collapse: collapse;
+    text-align: center;
     margin-bottom: 30px;
   }
 
-  table th {
+  .attendance-table th {
     padding: 20px 0;
     border-top: 1px solid #9E9E9E;
     font-size: 16px;
