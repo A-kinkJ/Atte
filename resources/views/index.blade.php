@@ -2,6 +2,7 @@
 $title = 'ホーム'
 @endphp
 
+
 @extends('default')
 <style>
   /* content */
