@@ -61,7 +61,7 @@ $title = 'ユーザー一覧'
       </form>
     </li>
     <li>
-      <form action="/userlist" method="GET" name="userList">
+      <form action="/userList" method="GET" name="userList">
         @csrf
         <a href="javascript:userList.submit()">ユーザー一覧</a>
       </form>
