@@ -26,6 +26,7 @@ class AttendanceController extends Controller
         }
         return view('index', ['user' => $user]);
 
+
         if ($timestamp->begin_time != null && $date != date("Y-m-d", strtotime($timestamp->begin_time)) && $timestamp->end_time == null) {
             //前日勤怠開始ボタンを押したまま退勤ボタンを押さずに日付を跨いだ場合
             $lastEndTime = $timestamp->end_time;
