@@ -32,13 +32,9 @@ $title = 'ユーザー一覧'
     padding: 7px 0;
   }
 
-  .user-name li:first-child {
-    border-radius: 15px 15px 0 0;
-  }
 
   .user-name li:last-child {
     border-bottom: 2px solid #2196F3;
-    border-radius: 0 0 15px 15px;
   }
 </style>
 
