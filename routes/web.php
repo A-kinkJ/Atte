@@ -41,7 +41,7 @@ Route::post('/restend',[RestConroller::class, 'restEnd'])->middleware('auth');
 
 /*勤怠一覧*/
 Route::get('/attendance', [AttendanceListController::class, 'index'])->middleware('auth');
-Route::post('/attendance', [AttendanceListController::class, 'attendanceDate'])->middleware('auth');
+Route::post('/attendance', [AttendanceListController::class, 'attendanceDate'])->middleware('guest');
 
 /*ユーザー一覧ページ*/
 Route::get('/userlist', [AttendanceListController::class, 'userList'])->middleware('auth');
