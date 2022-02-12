@@ -1,5 +1,5 @@
 @php
-$title = '日付一覧'
+$title = 'ユーザー毎の勤怠'
 @endphp
 
 @extends('default')
@@ -38,11 +38,10 @@ $title = '日付一覧'
     margin: 0 auto;
     padding: 10px 0;
     border-collapse: collapse;
-    text-align: center;
     margin-bottom: 30px;
   }
 
-  .attendance-table th {
+  table th {
     padding: 20px 0;
     border-top: 1px solid #9E9E9E;
     font-size: 16px;
@@ -53,16 +52,6 @@ $title = '日付一覧'
     border-top: 1px solid #9E9E9E;
     text-align: center;
     font-size: 14px;
-  }
-
-  .pagination-nav li {
-    background-color: white;
-    border-top: 1px solid #F5F5F5;
-    border-bottom: 1px solid #F5F5F5;
-    border-left: 1px solid #F5F5F5;
-    /* padding: 5px 15px 5px 15px; */
-    color: #1565C0;
-    font-size: 12px;
   }
 </style>
 
@@ -108,7 +97,7 @@ $title = '日付一覧'
 
 @section('content')
 <div class="attendance-date">
-  <form action=" /attendance" method="POST">
+  <form action=" /userattendance" method="POST">
     @csrf
     <input type="hidden" class="form-control" id="today" name="today" value={{ $today }}>
     <input type="hidden" class="flg" name="dayflg" value="back">
@@ -116,7 +105,7 @@ $title = '日付一覧'
   </form>
   </form>
   <p>{{$today}}</p>
-  <form action=" /attendance" method="POST">
+  <form action=" /userattendance" method="POST">
     @csrf
     <input type="hidden" class="form-control" id="today" name="today" value={{ $today }}>
     <input type="hidden" class="flg" name="dayflg" value="next">

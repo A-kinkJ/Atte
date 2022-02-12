@@ -4,15 +4,17 @@ $title = '会員登録'
 
 @extends('default')
 <style>
-    body{
+    body {
         margin: 0;
         padding: 0;
     }
+
     /* header */
     nav {
         display: flex;
     }
-    .logo h1{
+
+    .logo h1 {
         margin: 0px;
         padding: 10px 0;
     }
@@ -37,6 +39,7 @@ $title = '会員登録'
     /* content */
     .content {
         width: 100%;
+        height: 82%;
         background-color: #F5F5F5;
         text-align: center;
     }
@@ -86,11 +89,11 @@ $title = '会員登録'
 </style>
 
 @section('header')
-    <nav>
-        <div class="logo">
-            <h1>Atte</h1>
-        </div>
-    </nav>
+<nav>
+    <div class="logo">
+        <h1>Atte</h1>
+    </div>
+</nav>
 </div>
 @section('content')
 <div class="content">
@@ -146,5 +149,5 @@ $title = '会員登録'
 </div>
 @endsection
 @section('footer')
-    <small>Atte,inc</small>
+<small>Atte,inc</small>
 @endsection

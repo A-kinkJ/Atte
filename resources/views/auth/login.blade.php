@@ -41,7 +41,7 @@ $title = 'ログイン'
     /* content */
     .content {
         width: 100%;
-        height: 85%;
+        height: 82%;
         background-color: #F5F5F5;
         text-align: center;
     }
@@ -88,7 +88,6 @@ $title = 'ログイン'
         color: blue;
         font-weight: bold;
     }
-
 </style>
 
 @section('header')

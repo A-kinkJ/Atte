@@ -7,12 +7,15 @@ $title = 'ホーム'
   /* content */
   .content {
     width: 100%;
+    height: 82%;
     background-color: #F5F5F5;
     text-align: center;
   }
 
   .user-name h1 {
     font-size: 22px;
+    margin: 30px 0 60px 0;
+    font-weight: bold;
   }
 
   .index-content {
@@ -54,6 +57,18 @@ $title = 'ホーム'
       </form>
     </li>
     <li>
+      <form action="/userlist" method="GET" name="userList">
+        @csrf
+        <a href="javascript:userList.submit()">ユーザー一覧</a>
+      </form>
+    </li>
+    <li>
+      <form action="/userattendance" method="GET" name="userAttendanceList">
+        @csrf
+        <a href="javascript:userAttendanceList.submit()">ユーザーの勤怠</a>
+      </form>
+    </li>
+    <li>
       <form action="/logout" method="POST" name="logoutform">
         @csrf
         <a href="javascript:logoutform.submit()">ログアウト</a>
@@ -67,7 +82,7 @@ $title = 'ホーム'
 <div class="index-content">
   <div class="user-name">
     <h1>{{ $user->name }}さんお疲れ様です</h1>
-    <p class="user-name" id="timer" type="hidden"></p>
+    <!--<p class="user-name" id="timer" type="hidden"></p>-->
     @if(session('error'))
     <p class="user-error-start">{{session('error')}}</p>
     @endif
@@ -77,7 +92,7 @@ $title = 'ホーム'
       <tr>
         <td>
           <form action="/start" method="POST" name="btn_start">
-            @if(Session::has('start_time') || Session::has('rest_start') || Session::has('rest_end'))
+            @if(Session::has('start_time') || Session::has('rest_start') || Session::has('rest_end') || Session::has('end_time'))
             <button type="submit" id="btn_start" disabled>勤務開始</button>
             @else
             @csrf

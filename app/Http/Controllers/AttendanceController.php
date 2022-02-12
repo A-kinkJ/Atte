@@ -18,35 +18,28 @@ class AttendanceController extends Controller
         $user = Auth::user();
         $date = Carbon::today();
         $timestamp = Attendance::where('user_id',$user->id)->latest()->first();
-        $lastEndTime = optional($timestamp)->end_time;
-        $lastDateTime = optional($timestamp)->begin_time;
-        $lastDate = date('Y-m-d',strtotime(($lastDateTime)));
 
+        if ($timestamp->begintime_time != null && $date != date("Y-m-d", strtotime($timestamp->begin_time)) && $timestamp->end_time == null) {
+            //前日勤怠開始ボタンを押したまま退勤ボタンを押さずに日付を跨いだ場合
+            $lastEndTime = $timestamp->end_time;
+            $lastDateTime = $timestamp->start_time;
+            $lastDate = date("Y-m-d", strtotime(($lastDateTime)));
+            $nextdate = date("Y-m-d", strtotime($lastDateTime . "+1 day"));
+            //勤怠開始してから日付を跨いだ場合、勤怠開始時と同日の23:59:59をend_timeに挿入し、ログイン時の日時をstart_timeへ挿入
+            while ($lastEndTime == null && $lastDate != $date) {
 
+            $timestamp->update([
+                'end_time' => Carbon::parse($lastDateTime)->endOfDay(),
+                'getRest' => '00:00:00'
+            ]);
+        }
 
-        //if ($lastEndTime == null && $lastDate != $date){
-            //$timestamp->update([
-            //    'end_time'=>Carbon::parse($lastEndTime)->endOfDay()
-            //]);
-
-            //$timestamp = Attendance::create([
-            //    'user_id' => $user->id,
-            //    'begin_time' => Carbon::today(),
-            //]);
-        //}
+            $timestamp = Attendance::create([
+                'user_id' => $user->id,
+                'begin_time' => Carbon::today(),
+            ]);
+            }
         return view('index',['user'=>$user]);
-
-        //if(Auth::check()){
-        //$today = Carbon::today();
-        //$month = intaval($today->month);
-        //$day = intaval($today-day);
-        //$format = $today->format('Y年m月d日');
-        //$items = Attendance::GetMonthAttendance($month)->GetDayAttendance($day)->get();
-        //return view('index',['items'=>$items,'day'=>$format,'user'=>$user]);
-        //}else{
-        //return redirect('/login');
-        //}
-
         
     }
 
@@ -55,9 +48,9 @@ class AttendanceController extends Controller
          //勤務開始処置
         $user = Auth::user();
         // 打刻は１日一回まで
-        $oldTimeStamp = Attendance::where('user_id',$user->id)->latest()->first();
-        if($oldTimeStamp){
-            $oldTimeStampStart = new Carbon($oldTimeStamp->begin_time);
+        $timeStamp = Attendance::where('user_id',$user->id)->latest()->first();
+        if($timeStamp){
+            $oldTimeStampStart = new Carbon($timeStamp->begin_time);
 
             $oldTimeStampDay = $oldTimeStampStart->startOfDay();
         }
@@ -65,12 +58,12 @@ class AttendanceController extends Controller
         $newTimeStampDay = Carbon::today();
 
         //同日付の出勤打刻で、かつ直前のTimestampの退勤打刻がされていない場合エラーを吐き出す。
-        if ((isset($oldTimeStampDay) == $newTimeStampDay) && (empty($oldTimeStamp->end_time))) {
+        if ((isset($oldTimeStampDay) == $newTimeStampDay) && (empty($timeStamp->end_time))) {
             return redirect()->back()->with('error', 'すでに出勤打刻がされています。');
         }
-        
 
-        $timestamp = Attendance::create([
+
+        $timeStamp = Attendance::create([
             'user_id' => $user->id,
             'begin_time' => Carbon::now(),
             'date' => Carbon::today()
@@ -79,7 +72,6 @@ class AttendanceController extends Controller
                 'start_time' => true,
             ]);
 
-        
     }
 
     public function end(Request $request)
@@ -95,6 +87,8 @@ class AttendanceController extends Controller
                 'end_time' => Carbon::now()
             ]);
 
-            return redirect('/');//->with('status','お疲れ様でした');
+            return redirect()->back()->with([
+            'end_time' => true,
+        ]);
     }
 }

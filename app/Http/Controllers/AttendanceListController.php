@@ -15,29 +15,33 @@ use Illuminate\Pagination\Paginator;
 class AttendanceListController extends Controller
 {
     public function index(Request $request){
-        //Auth::check();
+        if ($request->page) {
+        $date = $request->date; // 現在指定している日付を取得
+        } else {
+            $date = Carbon::today()->format("Y-m-d");
+        }
+
         $user = Auth::user();
         $user_id = Auth::id();
-        $date = Carbon::today()->format("Y-m-d");
+        
 
 
         $attendance = Attendance::where('user_id',$user_id)->latest()->first();
         $timeStamp = Rest::where('attendance_id',$attendance->id)->latest()->first();
 
-        //$rests = DB::table('rests')
-        //->selectRaw('date_format(breake_begin_time,"%Y%m%d") as today')
-        //->selectRaw('sum(breake_end_time - breake_begin_time)')
-        //->groupBy('attendance_id','today')
-        //->get();
-
         $items = Attendance::whereDate('begin_time', $date)->paginate(5);
+        $items->appends(compact('date'));
 
         return view('attendance',['today'=>$date,'items'=>$items]);
     }
 
     public function attendanceDate(Request $request){
-        Auth::check();
-        //$user = Auth::user();
+        if ($request->page) {
+            $date = $request->date; // 現在指定している日付を取得
+        } else {
+            $date = Carbon::today()->format("Y-m-d");
+        }
+        $user = Auth::user();
         $user_id = Auth::id();
         $date = Carbon::today()->format("Y-m-d");
 
@@ -53,15 +57,57 @@ class AttendanceListController extends Controller
         $attendance = Attendance::where('user_id', $user_id)->latest()->first();
         $timeStamp = Rest::where('attendance_id', $attendance->id)->latest()->first();
 
-        $rests = DB::table('rests')
-            ->selectRaw('date_format(breake_begin_time,"%Y%m%d") as today')
-            ->selectRaw('sum(breake_end_time - breake_begin_time)')
-            ->groupBy('attendance_id', 'today')
-            ->get();
 
-
-        $items = Attendance::whereDate('begin_time', $date)->with('user')->paginate(5);
+        $items = Attendance::whereDate('begin_time', $date)->paginate(5);
+        $items->appends(compact('date'));
 
         return view('attendance', ['today' => $date, 'items' => $items]);
+    }
+
+    public function userList(){
+        $items = User::Paginate(10);
+        return view('userlist',['items'=>$items]);
+    }
+
+    public function userAttendanceList(){
+        $date = Carbon::today()->format("Y-m-d");
+
+        $user = Auth::user();
+        $user_id = Auth::id();
+
+
+
+        $attendance = Attendance::where('user_id', $user_id)->latest()->first();
+        $timeStamp = Rest::where('attendance_id', $attendance->id)->latest()->first();
+
+        $items = Attendance::whereDate('begin_time', $date)->where('user_id', $user_id)->paginate(5);
+        $items->appends(compact('date'));
+
+        return view('userattendancelist', ['today' => $date, 'items' => $items]);
+    }
+
+    public function userAttendanceListNext(Request $request){
+        $date = Carbon::today()->format("Y-m-d");
+        $user = Auth::user();
+        $user_id = Auth::id();
+        $date = Carbon::today()->format("Y-m-d");
+
+        $nowdate = $request->input('today');
+        $dayflg = $request->input('dayflg');
+
+        if ($dayflg == "next") {
+            $date = date("Y-m-d", strtotime($nowdate . "+1 day"));
+        } else if ($dayflg == "back") {
+            $date = date("Y-m-d", strtotime($nowdate . "-1 day"));
+        }
+
+        $attendance = Attendance::where('user_id', $user_id)->latest()->first();
+        $timeStamp = Rest::where('attendance_id', $attendance->id)->latest()->first();
+
+
+        $items = Attendance::whereDate('begin_time', $date)->where('user_id', $user_id)->paginate(5);
+        $items->appends(compact('date'));
+
+        return view('userattendancelist', ['today' => $date, 'items' => $items]);
     }
 }
