@@ -15,8 +15,11 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;
 
+  }
+
+  .header {
+    height: 50px;
   }
 
   nav {
@@ -60,6 +63,54 @@
     z-index: 1;
     position: absolute;
     bottom: 0;
+
+  }
+
+  @media screen and (max-width: 480px) {
+    .header {
+      width: 100%;
+    }
+
+    .logo h1 {
+      margin: 0px;
+      padding: 13px 0 10px 0;
+      font-size: 18px;
+    }
+
+    .header ul {
+      width: 90%;
+      display: flex;
+      list-style: none;
+      align-items: center;
+      margin: 17px 0 0 0;
+    }
+
+    .header li {
+      padding-left: 3%;
+
+    }
+
+    .header li a {
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+
+      font-size: 5px;
+    }
+
+    nav {
+      display: flex;
+      z-index: 1;
+    }
+
+    .footer {
+      background-color: white;
+      text-align: center;
+      z-index: 1;
+      position: absolute;
+      bottom: 0;
+      padding: 10px 0 30px 0;
+    }
 
   }
 </style>

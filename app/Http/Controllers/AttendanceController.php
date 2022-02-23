@@ -9,7 +9,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -26,6 +25,20 @@ class AttendanceController extends Controller
         }
         return view('index', ['user' => $user]);
 
+        // 打刻は１日一回まで
+        if ($timestamp->today != null) {
+            $oldTimeStampStart = new Carbon($timestamp->begin_time);
+
+            $oldTimeStampDay = $oldTimeStampStart->startOfDay();
+        }
+
+        $newTimeStampDay = Carbon::today();
+
+        //同日付の出勤打刻で、かつ直前のTimestampの退勤打刻がされていない場合エラーを吐き出す。
+        if ((isset($oldTimeStampDay) == $newTimeStampDay) && (empty($timestamp->end_time))) {
+            return redirect()->back()->with('error', 'すでに出勤打刻がされています。');
+        }
+        return view('index', ['user' => $user]);
 
         if ($timestamp->begin_time != null && $date != date("Y-m-d", strtotime($timestamp->begin_time)) && $timestamp->end_time == null) {
             //前日勤怠開始ボタンを押したまま退勤ボタンを押さずに日付を跨いだ場合
@@ -60,10 +73,6 @@ class AttendanceController extends Controller
 
         $newTimeStampDay = Carbon::today();
 
-        //同日付の出勤打刻で、かつ直前のTimestampの退勤打刻がされていない場合エラーを吐き出す。
-        //if ((isset($oldTimeStampDay) == $newTimeStampDay) && (empty($timeStamp->end_time))) {
-            //return redirect()->back()->with('error', 'すでに出勤打刻がされています。');
-        //}
 
 
         $timeStamp = Attendance::create([
@@ -83,9 +92,6 @@ class AttendanceController extends Controller
         $user = Auth::user();
         $timestamp = Attendance::where('user_id', $user->id)->latest()->first();
 
-        //if(!empty($timestamp->end_time)){
-            //return redirect()->back()->with('error','打刻済みです');
-        //}else{
             $timestamp->update([
                 'end_time' => Carbon::now()
             ]);

@@ -13,7 +13,7 @@ $title = 'ホーム'
     text-align: center;
   }
 
-  .user-name h1 {
+  .user-name h2 {
     font-size: 22px;
     margin: 30px 0 60px 0;
     font-weight: bold;
@@ -22,6 +22,10 @@ $title = 'ホーム'
   .index-content {
     width: 100%;
     padding: 30px 0;
+  }
+
+  .attendance-button {
+    display: flex;
   }
 
   .attendance-button table {
@@ -37,6 +41,26 @@ $title = 'ホーム'
     border: none;
     padding: 60px 120px;
     background-color: white;
+  }
+
+  @media screen and (max-width: 480px) {
+    .attendance-button button {
+      border: none;
+      padding: 40px 100px;
+      background-color: white;
+    }
+
+    .attendance-button th,
+    td {
+      display: block;
+    }
+
+    .user-name h2 {
+      font-size: 18px;
+      margin: 30px 0 30px 0;
+      font-weight: bold;
+    }
+
   }
 </style>
 @section('header')
@@ -82,7 +106,7 @@ $title = 'ホーム'
 @section('content')
 <div class="index-content">
   <div class="user-name">
-    <h1>{{ $user->name }}さんお疲れ様です</h1>
+    <h2>{{ $user->name }}さんお疲れ様です</h2>
     <!--<p class="user-name" id="timer" type="hidden"></p>-->
     @if(session('error'))
     <p class="user-error-start">{{session('error')}}</p>

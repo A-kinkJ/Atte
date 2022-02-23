@@ -64,6 +64,19 @@ $title = '日付一覧'
     color: #1565C0;
     font-size: 12px;
   }
+
+  @media screen and (max-width: 480px) {
+    .attendance-date input{
+      padding: 2px 7px;
+    } 
+    .attendance-table th {
+      font-size: 12px;
+    }
+
+    .attendance-table td {
+      font-size: 10px;
+    }
+  }
 </style>
 
 @section('header')
